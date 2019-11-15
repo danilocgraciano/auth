@@ -1,0 +1,2 @@
+-- 123456 = $2a$10$1/su6XyKPvoE2A.VsHDXhObbonhUEqWcJ2CzOTs6AS24T6NBAs0Ji
+insert into user(email,password) values('danilocgraciano@gmail.com','$2a$10$1/su6XyKPvoE2A.VsHDXhObbonhUEqWcJ2CzOTs6AS24T6NBAs0Ji')
