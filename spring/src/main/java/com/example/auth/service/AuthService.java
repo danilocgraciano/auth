@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.auth.entity.ResourceOwner;
 import com.example.auth.entity.User;
 import com.example.auth.repository.UserRepository;
 
@@ -34,7 +35,7 @@ public class AuthService implements UserDetailsService {
 		Optional<User> user = repository.findByCredentials_Email(username);
 
 		if (user.isPresent()) {
-			return user.get();
+			return new ResourceOwner(user.get());
 		}
 
 		throw new UsernameNotFoundException("Invalid data!");
@@ -42,11 +43,11 @@ public class AuthService implements UserDetailsService {
 
 	public String buildToken(Authentication authentication) {
 
-		User loggedUser = (User) authentication.getPrincipal();
+		ResourceOwner owner = (ResourceOwner) authentication.getPrincipal();
 		Date today = new Date();
 		Date expireDate = new Date(today.getTime() + Long.parseLong(expiration));
 
-		return Jwts.builder().setIssuer("Auth Api").setSubject(loggedUser.getId().toString()).setIssuedAt(today)
+		return Jwts.builder().setIssuer("Auth Api").setSubject(owner.getId().toString()).setIssuedAt(today)
 				.setExpiration(expireDate).signWith(SignatureAlgorithm.HS256, secret).compact();
 
 	}
