@@ -8,6 +8,7 @@ import com.example.auth.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findByEmail(String email);
+//	@Query("from User u where u.credentials.email = :email")
+	Optional<User> findByCredentials_Email(String email);
 
 }

@@ -11,7 +11,10 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties({ "credentials", "email", "password" })
 public class User implements UserDetails {
 
 	/**
@@ -24,10 +27,9 @@ public class User implements UserDetails {
 	private Long id;
 
 	@NotEmpty
-	private String email;
+	private String name;
 
-	@NotEmpty
-	private String password;
+	private Credentials credentials;
 
 	public Long getId() {
 		return id;
@@ -37,20 +39,20 @@ public class User implements UserDetails {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getName() {
+		return name;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getPassword() {
-		return password;
+	public Credentials getCredentials() {
+		return credentials;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setCredentials(Credentials credentials) {
+		this.credentials = credentials;
 	}
 
 	@Override
@@ -60,9 +62,13 @@ public class User implements UserDetails {
 	}
 
 	@Override
+	public String getPassword() {
+		return credentials.getPassword();
+	}
+
+	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override

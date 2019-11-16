@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.auth.controller.dto.TokenDto;
-import com.example.auth.entity.User;
+import com.example.auth.entity.Credentials;
 import com.example.auth.service.AuthService;
 
 @RestController
@@ -29,10 +29,10 @@ public class AuthController {
 	private AuthService authService;
 
 	@PostMapping
-	public ResponseEntity<TokenDto> auth(@RequestBody @Valid User user) {
+	public ResponseEntity<TokenDto> auth(@RequestBody @Valid Credentials credentials) {
 
 		try {
-			UsernamePasswordAuthenticationToken data = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+			UsernamePasswordAuthenticationToken data = new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword());
 
 			Authentication authentication = authenticationManager.authenticate(data);
 

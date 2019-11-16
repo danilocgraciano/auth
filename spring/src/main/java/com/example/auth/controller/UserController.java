@@ -1,7 +1,6 @@
 package com.example.auth.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.auth.controller.dto.UserDto;
 import com.example.auth.entity.User;
 import com.example.auth.repository.UserRepository;
 
@@ -30,8 +28,8 @@ public class UserController {
 
 	@PostMapping
 	@Transactional
-	public UserDto save(@Valid User user) {
-		return new UserDto(repository.save(user));
+	public User save(@Valid User user) {
+		return repository.save(user);
 	}
 
 	@PutMapping("/{id}")
@@ -48,14 +46,13 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public UserDto one(@PathVariable Long id) {
-		User user = repository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("User not found " + id, 1));
-		return new UserDto(user);
+	public User one(@PathVariable Long id) {
+		return repository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException("User not found " + id, 1));
 	}
 
 	@GetMapping
-	public List<UserDto> all() {
-		return repository.findAll().stream().map(user -> new UserDto(user)).collect(Collectors.toList());
+	public List<User> all() {
+		return repository.findAll();
 	}
 
 }
