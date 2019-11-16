@@ -2,6 +2,7 @@ package com.example.auth.entity;
 
 import java.util.Collection;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,10 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @JsonIgnoreProperties({ "credentials", "email", "password" })
 public class User implements UserDetails {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,6 +27,7 @@ public class User implements UserDetails {
 	@NotEmpty
 	private String name;
 
+	@Embedded
 	private Credentials credentials;
 
 	public Long getId() {

@@ -1,11 +1,13 @@
 package com.example.auth.entity;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Embeddable
 public class Credentials {
 
+	@Email
 	@NotEmpty
 	private String email;
 
