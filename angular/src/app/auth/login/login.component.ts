@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         } else {
           const modalRef = this.modalService.open(DialogComponent);
           modalRef.componentInstance.title = 'Attention';
-          modalRef.componentInstance.message = 'Invalid data';
+          modalRef.componentInstance.message = 'User/Password invalid';
         }
       });
     }

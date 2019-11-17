@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-navbar',
