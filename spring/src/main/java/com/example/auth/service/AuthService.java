@@ -24,10 +24,10 @@ public class AuthService implements UserDetailsService {
 	@Autowired
 	private UserRepository repository;
 
-	@Value("${expiration}")
+	@Value("${jwt.expiration}")
 	private String expiration;
 
-	@Value("${secret}")
+	@Value("${jwt.secret}")
 	private String secret;
 
 	@Override
@@ -47,18 +47,39 @@ public class AuthService implements UserDetailsService {
 		Date today = new Date();
 		Date expireDate = new Date(today.getTime() + Long.parseLong(expiration));
 
-		return Jwts.builder().setIssuer("Auth Api").setSubject(owner.getId().toString()).setIssuedAt(today)
-				.setExpiration(expireDate).signWith(SignatureAlgorithm.HS256, secret).compact();
+		return Jwts.builder()
+				.setIssuer("Auth Api")
+				.setSubject(owner.getId().toString())
+				.setIssuedAt(today)
+				.setExpiration(expireDate)
+				.signWith(SignatureAlgorithm.HS256, secret)
+				.compact();
 
 	}
 
 	public boolean isTokenValid(String token) {
 		try {
+			
+			if (token == null || token.isEmpty())
+				return false;
+			
 			Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public boolean isTokenExpired(String token) {
+		
+		if (token == null || token.isEmpty())
+			return true;
+		
+		Date expirationDate = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getExpiration();
+		if (expirationDate.before(new Date())) 
+			return true;
+		
+		return false;
 	}
 
 	public Long getUserId(String token) {

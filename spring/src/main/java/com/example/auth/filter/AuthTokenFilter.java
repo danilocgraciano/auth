@@ -35,6 +35,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		boolean valid = authService.isTokenValid(token);
 		if (valid) {
 			authenticate(token);
+
+			boolean expired = authService.isTokenExpired(token);
+			if (expired)
+				SecurityContextHolder.getContext().setAuthentication(null);
 		}
 
 		filterChain.doFilter(request, response);
@@ -56,8 +60,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		Optional<User> optional = userRepository.findById(userId);
 		User user = optional.get();
 		ResourceOwner owner = new ResourceOwner(user);
-		
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(owner, null, owner.getAuthorities());
+
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(owner, null,
+				owner.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
