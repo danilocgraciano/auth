@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{title}}</h4>
+</div>
+<div class="modal-body">
+    <p>{{message}}</p>
+    <small class="text-muted">{{debug}}</small>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close(0)">Não</button>
+    <button type="button" class="btn btn-danger" (click)="close(1)" ngbAutofocus>Sim</button>
+</div>
